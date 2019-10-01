@@ -32,17 +32,27 @@ function loadMessage(messages) {
     chatBox.innerText = "";
     for (const message of messages) {
         let newLi = document.createElement("li");
-        let newLabel = document.createElement("label");
-        newLabel = message.user;
-        newLi.innerText = message.message;
-        chatBox.append(newLabel);
+        newLi.classList.add("message");
+        let incMessage = document.createElement("p1");
+        let div = document.createElement("div");
+        let date = document.createElement("p");
+        let userName = document.createElement("h4");
+        date.innerText = message.date;
+        userName.innerText = message.user;
+        userName.classList.add("userName");
+        incMessage.innerText = message.message;
         chatBox.append(newLi);
+        newLi.append(div);
+        div.append(userName);
+        div.append(incMessage);
+        div.append(date);
     }
 }
 
 try {
     const submitMessage = document.querySelector(".submitMessage")
     submitMessage.addEventListener("submit", postMessage);
+    submitMessage.addEventListener("keydown", checkMessage)
 } catch (err) {
 }
 
@@ -70,7 +80,14 @@ function postMessage() {
 }
 
 
-
+function checkMessage() {
+    const textArea = document.querySelector("#textArea");
+    if (textArea.value.length >= 139) {
+        textArea.style.borderColor = "red";
+    } else {
+        textArea.style.borderColor = "gray";
+    }
+}
 
 /*let xhttp = new XMLHttpRequest()
 xhttp.onreadystatechange = function () {
@@ -111,8 +128,12 @@ function singUpNow() {
     }).then((res) => res.json())
         .then((data) => {
             console.log(data);
-            localStorage.setItem("chatRoomLogin", data.code);
-            window.location.href = "./chat-room.html";
+            if (data.code == -1 || data.code == 0) {
+                alert("Something went wrong, check the user name and the password.")
+            } else {
+                localStorage.setItem("chatRoomLogin", data.code);
+                window.location.href = "./chat-room.html";
+            }
         })
         .catch((err) => console.log(err));
 }
@@ -121,7 +142,6 @@ try {
     const login = document.querySelector(".login")
     login.addEventListener("submit", logIn)
 } catch (err) {
-
 }
 
 function logIn() {
@@ -142,8 +162,12 @@ function logIn() {
     }).then((res) => res.json())
         .then((data) => {
             console.log(data);
-            localStorage.setItem("chatRoomLogin", data.code);
-            window.location.href = "./chat-room.html";
+            if (data.code == 0) {
+                alert("Something went wrong, check the user name and the password.")
+            } else {
+                localStorage.setItem("chatRoomLogin", data.code);
+                window.location.href = "./chat-room.html";
+            }
         })
         .catch((err) => console.log(err));
 }
