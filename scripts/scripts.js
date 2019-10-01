@@ -1,9 +1,6 @@
 const isIt = window.location.href.indexOf("chat-room.html") ? true : false;
-console.log(isIt)
 if (isIt) {
     getMessage();
-
-    let chatRoomLogin = 0;
 
     setInterval(function () {
         getMessage();
@@ -71,7 +68,6 @@ function postMessage() {
         })
     }).then((res) => res.json())
         .then((data) => {
-            console.log(data);
             getMessage();
             document.getElementById('textArea').value = '';
         })
